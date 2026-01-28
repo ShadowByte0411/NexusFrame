@@ -1,7 +1,5 @@
 # NexusFrame - Professional Photo Portfolio Platform
 
-![NexusFrame Banner](https://via.placeholder.com/1200x400/1a1a2e/00b4d8?text=NexusFrame+Professional+Photo+Portfolio)
-
 A modern, interactive photo portfolio website with 3D graphics, social networking features, and full user authentication. Built with HTML, CSS, and JavaScript.
 
 ## 📸 Features
