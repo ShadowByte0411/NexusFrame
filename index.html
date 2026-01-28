@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexusFrame | Professional Photo Portfolio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- 3D Background Container -->
+    <div id="three-container"></div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">
+            <i class="fas fa-camera-retro"></i>
+            NexusFrame
+        </div>
+        <div class="nav-links">
+            <a href="#" class="nav-link" data-page="home">Home</a>
+            <a href="#" class="nav-link" data-page="gallery">Gallery</a>
+            <a href="#" class="nav-link" data-page="photographers">Photographers</a>
+            <a href="#" class="nav-link" data-page="upload">Upload</a>
+            <a href="#" class="nav-link" data-page="messages" id="messages-link">
+                <i class="fas fa-comments"></i>
+                <span class="notification-badge hidden" id="message-badge"></span>
+            </a>
+        </div>
+        <div class="user-section">
+            <div class="auth-btns">
+                <button class="auth-btn" id="login-btn">Login</button>
+                <button class="auth-btn" id="signup-btn">Sign Up</button>
+            </div>
+            <div class="profile-section hidden">
+                <div class="profile-btn" id="profile-btn">JD</div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Notification -->
+    <div class="notification" id="notification"></div>
+
+    <!-- Pages -->
+    <div id="home-page" class="page active">
+        <section class="hero">
+            <h1>Capture. Share. Connect.</h1>
+            <p>Join a community of passionate photographers. Showcase your work, discover incredible talent, and connect with fellow creators from around the world.</p>
+            <button class="cta-btn" id="join-today-btn">Join Today</button>
+        </section>
+
+        <h2 class="section-title">Featured Photos</h2>
+        <div class="gallery" id="featured-gallery"></div>
+    </div>
+
+    <div id="gallery-page" class="page">
+        <div class="container">
+            <h2 class="section-title">Photo Gallery</h2>
+            <div class="gallery" id="main-gallery"></div>
+        </div>
+    </div>
+
+    <div id="photographers-page" class="page">
+        <div class="container">
+            <h2 class="section-title">Meet Photographers</h2>
+            <div class="photographers-grid" id="photographers-grid"></div>
+        </div>
+    </div>
+
+    <div id="upload-page" class="page">
+        <div class="upload-container">
+            <h2 class="section-title">Upload Your Photos</h2>
+            <div class="upload-box">
+                <div class="upload-area" id="upload-area">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <p>Drag & Drop your images here</p>
+                    <span>or click to browse (JPG, PNG up to 10MB)</span>
+                    <input type="file" id="file-input" multiple accept="image/*" hidden>
+                </div>
+                <div id="preview-container"></div>
+                <div class="form-group">
+                    <label for="photo-title">Photo Title</label>
+                    <input type="text" id="photo-title" placeholder="Enter a captivating title">
+                </div>
+                <div class="form-group">
+                    <label for="photo-description">Description</label>
+                    <input type="text" id="photo-description" placeholder="Tell the story behind your photo">
+                </div>
+                <div class="form-group">
+                    <label for="photo-tags">Tags (comma separated)</label>
+                    <input type="text" id="photo-tags" placeholder="landscape, portrait, nature, urban">
+                </div>
+                <button class="auth-submit" id="upload-submit">Upload Photos</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="login-page" class="page">
+        <div class="auth-container">
+            <div class="auth-box">
+                <h2>Welcome Back</h2>
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="login-email">Email</label>
+                        <input type="email" id="login-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Password</label>
+                        <input type="password" id="login-password" required>
+                    </div>
+                    <button type="submit" class="auth-submit">Login</button>
+                </form>
+                <div class="auth-switch">
+                    Don't have an account? <a href="#" id="to-signup">Sign up here</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="signup-page" class="page">
+        <div class="auth-container">
+            <div class="auth-box">
+                <h2>Create Account</h2>
+                <form id="signup-form">
+                    <div class="form-group">
+                        <label for="signup-name">Full Name</label>
+                        <input type="text" id="signup-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-email">Email</label>
+                        <input type="email" id="signup-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-password">Password</label>
+                        <input type="password" id="signup-password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-bio">Bio (Optional)</label>
+                        <input type="text" id="signup-bio" placeholder="Tell us about yourself">
+                    </div>
+                    <button type="submit" class="auth-submit">Create Account</button>
+                </form>
+                <div class="auth-switch">
+                    Already have an account? <a href="#" id="to-login">Login here</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Messages Page -->
+    <div id="messages-page" class="page">
+        <div class="messages-container">
+            <div class="messages-sidebar">
+                <div class="messages-header">
+                    <h2>Messages</h2>
+                    <button class="new-chat-btn" id="new-chat-btn">
+                        <i class="fas fa-plus"></i> New Chat
+                    </button>
+                </div>
+                <div class="conversations-list" id="conversations-list">
+                    <!-- Conversations will be loaded here -->
+                </div>
+            </div>
+            
+            <div class="chat-container" id="chat-container">
+                <div class="no-chat-selected">
+                    <i class="fas fa-comments"></i>
+                    <h3>Select a conversation to start messaging</h3>
+                    <p>Connect with photographers, discuss collaborations, or share feedback</p>
+                </div>
+                
+                <!-- Active chat will be loaded here -->
+                <div class="active-chat hidden" id="active-chat">
+                    <div class="chat-header">
+                        <div class="chat-partner">
+                            <img src="" alt="Photographer" id="chat-partner-avatar">
+                            <div>
+                                <h3 id="chat-partner-name"></h3>
+                                <p id="chat-partner-status">Online</p>
+                            </div>
+                        </div>
+                        <button class="chat-actions-btn">
+                            <i class="fas fa-ellipsis-v"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="chat-messages" id="chat-messages">
+                        <!-- Messages will be loaded here -->
+                    </div>
+                    
+                    <div class="chat-input-area">
+                        <div class="quick-messages">
+                            <button class="quick-message-btn" data-message="Hi! I love your photography work.">Love your work!</button>
+                            <button class="quick-message-btn" data-message="Would you be interested in collaborating on a project?">Collaborate?</button>
+                            <button class="quick-message-btn" data-message="What camera equipment do you use?">Equipment query</button>
+                            <button class="quick-message-btn" data-message="Can I get some feedback on my portfolio?">Feedback request</button>
+                        </div>
+                        <div class="message-input-wrapper">
+                            <input type="text" id="message-input" placeholder="Type your message...">
+                            <button id="send-message-btn">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>NexusFrame</h3>
+                <p>A platform connecting photographers worldwide. Share your vision, discover new perspectives, and build your creative network.</p>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-pinterest-p"></i></a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <p><a href="#" class="nav-link" data-page="home" style="color:inherit">Home</a></p>
+                <p><a href="#" class="nav-link" data-page="gallery" style="color:inherit">Gallery</a></p>
+                <p><a href="#" class="nav-link" data-page="photographers" style="color:inherit">Photographers</a></p>
+                <p><a href="#" class="nav-link" data-page="upload" style="color:inherit">Upload</a></p>
+            </div>
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <p><i class="fas fa-envelope"></i> contact@nexusframe.com</p>
+                <p><i class="fas fa-phone"></i> +1 (555) 123-4567</p>
+                <p><i class="fas fa-map-marker-alt"></i> 123 Creative Street, Art City</p>
+            </div>
+        </div>
+        <div class="copyright">
+            &copy; 2023 NexusFrame. All rights reserved.
+        </div>
+    </footer>
+
+    <!-- Three.js CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.min.js"></script>
+    
+    <!-- Main JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
