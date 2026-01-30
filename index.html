@@ -8,10 +8,7 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- 3D Background Container -->
     <div id="three-container"></div>
-
-    <!-- Navigation -->
     <nav>
         <div class="logo">
             <i class="fas fa-camera-retro"></i>
@@ -38,10 +35,8 @@
         </div>
     </nav>
 
-    <!-- Notification -->
     <div class="notification" id="notification"></div>
 
-    <!-- Pages -->
     <div id="home-page" class="page active">
         <section class="hero">
             <h1>Capture. Share. Connect.</h1>
@@ -147,7 +142,6 @@
         </div>
     </div>
 
-    <!-- Messages Page -->
     <div id="messages-page" class="page">
         <div class="messages-container">
             <div class="messages-sidebar">
@@ -168,8 +162,7 @@
                     <h3>Select a conversation to start messaging</h3>
                     <p>Connect with photographers, discuss collaborations, or share feedback</p>
                 </div>
-                
-                <!-- Active chat will be loaded here -->
+          
                 <div class="active-chat hidden" id="active-chat">
                     <div class="chat-header">
                         <div class="chat-partner">
@@ -185,9 +178,8 @@
                     </div>
                     
                     <div class="chat-messages" id="chat-messages">
-                        <!-- Messages will be loaded here -->
-                    </div>
                     
+                    </div>
                     <div class="chat-input-area">
                         <div class="quick-messages">
                             <button class="quick-message-btn" data-message="Hi! I love your photography work.">Love your work!</button>
@@ -207,7 +199,6 @@
         </div>
     </div>
 
-    <!-- Footer -->
     <footer>
         <div class="footer-content">
             <div class="footer-section">
@@ -239,12 +230,9 @@
         </div>
     </footer>
 
-    <!-- Three.js CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.min.js"></script>
-    
-    <!-- Main JavaScript -->
     <script src="script.js"></script>
 </body>
 </html>
