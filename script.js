@@ -1,4 +1,3 @@
-// Preloaded images data
 const preloadedImages = [
     {
         id: 1,
@@ -113,8 +112,6 @@ const preloadedPhotographers = [
         online: false
     }
 ];
-
-// Mock conversations data
 const mockConversations = [
     {
         id: 1,
@@ -217,7 +214,6 @@ const mockConversations = [
     }
 ];
 
-// User state
 let currentUser = null;
 let uploadedImages = JSON.parse(localStorage.getItem('uploadedImages')) || [];
 let users = JSON.parse(localStorage.getItem('users')) || [
@@ -226,7 +222,6 @@ let users = JSON.parse(localStorage.getItem('users')) || [
 let conversations = JSON.parse(localStorage.getItem('conversations')) || mockConversations;
 let activeChatId = null;
 
-// DOM Elements
 const pages = document.querySelectorAll('.page');
 const navLinks = document.querySelectorAll('.nav-link');
 const loginBtn = document.getElementById('login-btn');
@@ -258,7 +253,6 @@ const sendMessageBtn = document.getElementById('send-message-btn');
 const quickMessageBtns = document.querySelectorAll('.quick-message-btn');
 const newChatBtn = document.getElementById('new-chat-btn');
 
-// Initialize Three.js 3D background
 function initThreeJS() {
     const container = document.getElementById('three-container');
     const scene = new THREE.Scene();
@@ -269,7 +263,6 @@ function initThreeJS() {
     renderer.setPixelRatio(window.devicePixelRatio);
     container.appendChild(renderer.domElement);
     
-    // Create floating geometric shapes
     const geometry = new THREE.IcosahedronGeometry(1, 0);
     const material = new THREE.MeshPhongMaterial({ 
         color: 0x0f4c75, 
@@ -288,8 +281,7 @@ function initThreeJS() {
         scene.add(shape);
         shapes.push(shape);
     }
-    
-    // Add lights
+  
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
     scene.add(ambientLight);
     
@@ -298,8 +290,7 @@ function initThreeJS() {
     scene.add(directionalLight);
     
     camera.position.z = 30;
-    
-    // Animation
+
     function animate() {
         requestAnimationFrame(animate);
         
@@ -313,8 +304,7 @@ function initThreeJS() {
     }
     
     animate();
-    
-    // Handle window resize
+
     window.addEventListener('resize', () => {
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
@@ -322,7 +312,6 @@ function initThreeJS() {
     });
 }
 
-// Show notification
 function showNotification(message, type = 'info') {
     notification.textContent = message;
     notification.className = `notification ${type} show`;
@@ -332,7 +321,6 @@ function showNotification(message, type = 'info') {
     }, 3000);
 }
 
-// Switch between pages
 function switchPage(pageId) {
     pages.forEach(page => {
         page.classList.remove('active');
@@ -340,20 +328,17 @@ function switchPage(pageId) {
             page.classList.add('active');
         }
     });
-    
-    // Update active nav link
+
     navLinks.forEach(link => {
         link.classList.remove('active');
         if (link.getAttribute('data-page') === pageId) {
             link.classList.add('active');
         }
     });
-    
-    // Update message badge
+
     updateMessageBadge();
 }
 
-// Render gallery
 function renderGallery(container, images) {
     container.innerHTML = '';
     
@@ -375,7 +360,6 @@ function renderGallery(container, images) {
     });
 }
 
-// Render photographers
 function renderPhotographers() {
     photographersGrid.innerHTML = '';
     
@@ -395,7 +379,6 @@ function renderPhotographers() {
     });
 }
 
-// Update message badge
 function updateMessageBadge() {
     const totalUnread = conversations.reduce((total, conv) => total + conv.unread, 0);
     
@@ -407,10 +390,8 @@ function updateMessageBadge() {
     }
 }
 
-// Render conversations list
 function renderConversationsList() {
     conversationsList.innerHTML = '';
-    
     if (conversations.length === 0) {
         conversationsList.innerHTML = `
             <div class="no-conversations">
@@ -443,43 +424,28 @@ function renderConversationsList() {
     });
 }
 
-// Open chat with specific photographer
 function openChat(conversationId) {
     activeChatId = conversationId;
     const conversation = conversations.find(c => c.id === conversationId);
     
     if (!conversation) return;
-    
-    // Mark as read
     conversation.unread = 0;
     updateMessageBadge();
-    
-    // Update UI
+  
     document.querySelector('.no-chat-selected').classList.add('hidden');
     activeChat.classList.remove('hidden');
-    
-    // Update chat header
     document.getElementById('chat-partner-avatar').src = conversation.photographerAvatar;
     document.getElementById('chat-partner-name').textContent = conversation.photographerName;
-    
-    // Render messages
     renderChatMessages(conversation.messages);
-    
-    // Update conversations list
     renderConversationsList();
-    
-    // Scroll to bottom
     chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 
-// Render chat messages
 function renderChatMessages(messages) {
     chatMessages.innerHTML = '';
-    
     messages.forEach(message => {
         const messageElement = document.createElement('div');
         messageElement.className = `message ${message.sender === 'user' ? 'sent' : 'received'}`;
-        
         messageElement.innerHTML = `
             <div class="message-content">${message.content}</div>
             <div class="message-time">${message.timestamp}</div>
@@ -489,7 +455,6 @@ function renderChatMessages(messages) {
     });
 }
 
-// Send a message
 function sendMessage(content) {
     if (!currentUser) {
         showNotification('Please login to send messages', 'error');
@@ -498,7 +463,6 @@ function sendMessage(content) {
     }
     
     if (!activeChatId) return;
-    
     const conversation = conversations.find(c => c.id === activeChatId);
     if (!conversation) return;
     
@@ -508,28 +472,16 @@ function sendMessage(content) {
         content: content,
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     };
-    
-    // Add message to conversation
+   
     conversation.messages.push(newMessage);
     conversation.lastMessage = content;
     conversation.timestamp = newMessage.timestamp;
-    
-    // Save to localStorage
     localStorage.setItem('conversations', JSON.stringify(conversations));
-    
-    // Render updated messages
     renderChatMessages(conversation.messages);
-    
-    // Update conversations list
     renderConversationsList();
-    
-    // Clear input
     messageInput.value = '';
-    
-    // Scroll to bottom
     chatMessages.scrollTop = chatMessages.scrollHeight;
-    
-    // Simulate a reply after 1-3 seconds
+
     setTimeout(() => {
         const replies = [
             "Thanks for your message! I'll get back to you soon.",
@@ -551,25 +503,20 @@ function sendMessage(content) {
         conversation.messages.push(replyMessage);
         conversation.lastMessage = randomReply;
         conversation.timestamp = replyMessage.timestamp;
-        
-        // Save to localStorage
+     
         localStorage.setItem('conversations', JSON.stringify(conversations));
-        
-        // Render updated messages if this is still the active chat
+
         if (activeChatId === conversation.id) {
             renderChatMessages(conversation.messages);
             chatMessages.scrollTop = chatMessages.scrollHeight;
         }
-        
-        // Update conversations list
+    
         renderConversationsList();
-        
-        // Update badge
+     
         updateMessageBadge();
     }, 1000 + Math.random() * 2000);
 }
 
-// Start a new conversation with a photographer
 function startNewConversation(photographerId) {
     if (!currentUser) {
         showNotification('Please login to connect with photographers', 'error');
@@ -579,12 +526,10 @@ function startNewConversation(photographerId) {
     
     const photographer = preloadedPhotographers.find(p => p.id === photographerId);
     if (!photographer) return;
-    
-    // Check if conversation already exists
+
     let conversation = conversations.find(c => c.photographerId === photographerId);
     
     if (!conversation) {
-        // Create new conversation
         conversation = {
             id: conversations.length + 1,
             photographerId: photographer.id,
@@ -609,12 +554,10 @@ function startNewConversation(photographerId) {
         showNotification(`Started conversation with ${photographer.name}`, 'success');
     }
     
-    // Open the chat
     openChat(conversation.id);
     switchPage('messages');
 }
 
-// Handle user login
 function loginUser(email, password) {
     const user = users.find(u => u.email === email && u.password === password);
     
@@ -625,8 +568,7 @@ function loginUser(email, password) {
         profileBtn.textContent = user.name.split(' ').map(n => n[0]).join('');
         showNotification(`Welcome back, ${user.name}!`, 'success');
         switchPage('home');
-        
-        // Save to localStorage
+
         localStorage.setItem('currentUser', JSON.stringify(user));
         
         return true;
@@ -636,9 +578,7 @@ function loginUser(email, password) {
     }
 }
 
-// Handle user signup
 function signupUser(name, email, password, bio) {
-    // Check if user already exists
     if (users.find(u => u.email === email)) {
         showNotification('User with this email already exists', 'error');
         return false;
@@ -662,14 +602,12 @@ function signupUser(name, email, password, bio) {
     profileBtn.textContent = newUser.avatar;
     showNotification(`Account created successfully! Welcome, ${name}`, 'success');
     switchPage('home');
-    
-    // Save to localStorage
+
     localStorage.setItem('currentUser', JSON.stringify(newUser));
     
     return true;
 }
 
-// Handle file upload preview
 function handleFileSelect(files) {
     previewContainer.innerHTML = '';
     
@@ -705,7 +643,6 @@ function handleFileSelect(files) {
     });
 }
 
-// Handle photo upload submission
 function handleUploadSubmit() {
     if (!currentUser) {
         showNotification('Please login to upload photos', 'error');
@@ -727,13 +664,10 @@ function handleUploadSubmit() {
         showNotification('Please enter a title for your photo', 'error');
         return;
     }
-    
-    // Simulate upload process
+   
     showNotification('Uploading your photos...', 'info');
     
     setTimeout(() => {
-        // In a real app, you would upload to a server here
-        // For demo, we'll just add to our local array
         previewItems.forEach((item, index) => {
             const imgSrc = item.querySelector('img').src;
             
@@ -752,32 +686,25 @@ function handleUploadSubmit() {
         
         localStorage.setItem('uploadedImages', JSON.stringify(uploadedImages));
         
-        // Clear form
         document.getElementById('photo-title').value = '';
         document.getElementById('photo-description').value = '';
         document.getElementById('photo-tags').value = '';
         previewContainer.innerHTML = '';
         
         showNotification('Photos uploaded successfully!', 'success');
-        
-        // Update gallery
+      
         renderGallery(mainGallery, [...preloadedImages, ...uploadedImages]);
     }, 1500);
 }
 
-// Initialize the application
 function init() {
-    // Initialize Three.js background
     initThreeJS();
-    
-    // Render initial content
     renderGallery(featuredGallery, preloadedImages.slice(0, 3));
     renderGallery(mainGallery, [...preloadedImages, ...uploadedImages]);
     renderPhotographers();
     renderConversationsList();
     updateMessageBadge();
-    
-    // Event Listeners
+
     navLinks.forEach(link => {
         link.addEventListener('click', (e) => {
             e.preventDefault();
@@ -797,16 +724,14 @@ function init() {
         e.preventDefault();
         switchPage('login');
     });
-    
-    // Login form submission
+
     loginForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const email = document.getElementById('login-email').value;
         const password = document.getElementById('login-password').value;
         loginUser(email, password);
     });
-    
-    // Signup form submission
+
     signupForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const name = document.getElementById('signup-name').value;
@@ -815,8 +740,7 @@ function init() {
         const bio = document.getElementById('signup-bio').value;
         signupUser(name, email, password, bio);
     });
-    
-    // File upload handling
+
     uploadArea.addEventListener('click', () => fileInput.click());
     uploadArea.addEventListener('dragover', (e) => {
         e.preventDefault();
@@ -836,21 +760,18 @@ function init() {
     });
     
     uploadSubmit.addEventListener('click', handleUploadSubmit);
-    
-    // Connect buttons
+  
     document.addEventListener('click', (e) => {
         if (e.target.classList.contains('connect-btn')) {
             const photographerId = parseInt(e.target.dataset.photographerId);
             startNewConversation(photographerId);
         }
     });
-    
-    // New chat button
+  
     newChatBtn.addEventListener('click', () => {
         showNotification('Click "Connect" on a photographer profile to start a conversation', 'info');
     });
-    
-    // Send message functionality
+   
     sendMessageBtn.addEventListener('click', () => {
         const message = messageInput.value.trim();
         if (message) {
@@ -866,25 +787,18 @@ function init() {
             }
         }
     });
-    
-    // Quick message buttons
+   
     quickMessageBtns.forEach(btn => {
         btn.addEventListener('click', () => {
             const message = btn.dataset.message;
             sendMessage(message);
         });
     });
-    
-    // Check if user is already logged in
+
     const savedUser = localStorage.getItem('currentUser');
     if (savedUser) {
         const user = JSON.parse(savedUser);
         loginUser(user.email, user.password);
     }
-    
-    // Demo login for testing
-    // loginUser('demo@nexusframe.com', 'demo123');
 }
-
-// Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', init);
